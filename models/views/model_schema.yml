@@ -1,0 +1,128 @@
+version: 2
+
+models:
+  - name: challenge_receipts
+    description: POC challenge receipts parsed from transaction JSON.
+    columns:
+      - name: block
+      - name: hash
+      - name: type
+      - name: challenger
+      - name: challenger_location
+      - name: challenger_owner
+      - name: fee
+      - name: onion_key_hash
+      - name: path
+      - name: secret
+      - name: time
+
+  - name: challenge_requests
+    description: POC challenge requests parsed from transaction JSON.
+    columns:
+    - name: block
+    - name: hash
+    - name: type
+    - name: block_hash
+    - name: challenger
+    - name: challenger_location
+    - name: challenger_owner
+    - name: fee
+    - name: onion_key_hash
+    - name: secret_hash
+    - name: version
+    - name: time 
+
+  - name: transactions_assert_location
+    description: Assert location transactions parsed from transaction JSON.
+    columns:
+    - name: block
+    - name: hash
+    - name: type
+    - name: fee
+    - name: nonce
+    - name: owner
+    - name: payer
+    - name: gateway
+    - name: location
+    - name: staking_fee
+    - name: time
+    
+  - name: transactions_payment
+    description: Payment transactions parsed from transaction JSON.
+    columns:
+      - name: block
+        description: The block in which the payment occurred.
+      - name: fee
+        description: Transaction fee.
+      - name: hash
+        description: Transaction hash.
+      - name: type
+        description: The transaction type.
+      - name: nonce
+        description: Payer transaction nonce.
+      - name: payee
+        description: Payee wallet address.
+      - name: payer
+        description: Payer wallet address.
+      - name: amount
+        description: Payment amount in bones.
+
+  - name: transactions_payment_v2
+    description: payment_v2 transactions parsed from transaction JSON.
+    columns:
+      - name: block
+        description: The block in which the payment occurred.
+      - name: fee
+        description: Transaction fee.
+      - name: hash
+        description: Transaction hash.
+      - name: type
+        description: The transaction type.
+      - name: nonce
+        description: Payer transaction nonce.
+      - name: payee
+        description: Payee wallet address.
+      - name: payer
+        description: Payer wallet address.
+      - name: amount
+        description: Payment amount in bones.
+
+  - name: transactions_price_oracle
+    description: Oracle price submissions parsed from transaction JSON.
+    columns:
+      - name: block
+      - name: hash
+      - name: type
+      - name: fee
+      - name: price
+      - name: public_key
+      - name: block_height
+
+  - name: transactions_transfer_hotspot
+    description: Transfer hotspot transactions parsed from transaction JSON.
+    columns:
+      - name: block
+      - name: hash
+      - name: type
+      - name: buyer
+      - name: seller
+      - name: gateway
+      - name: buyer_nonce
+      - name: amount_to_seller
+      - name: time
+
+  - name: validator_cg_members
+    description: Consensus participation by validator.
+    columns:
+      - name: address
+      - name: cg_count
+
+  - name: validator_penalty_parsed
+    description: Validator penalty details.
+    columns:
+      - name: address
+      - name: name
+      - name: owner
+      - name: penalty_type
+      - name: penalty_amount
+      - name: penalty_type

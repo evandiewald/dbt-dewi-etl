@@ -1,0 +1,396 @@
+version: 2
+
+sources:
+  - name: etl
+    database: etl2
+    schema: public
+    tables:
+      - name: account_inventory
+        description: The current state of all accounts.
+        columns:
+          - name: address
+            description: The wallet address (PK).
+          - name: balance
+            description: The current balance in bones (1e8 bones/HNT).
+          - name: nonce
+            description: The current nonce.
+          - name: dc_balance
+            description: The current DC balance.
+          - name: dc_nonce
+            description: The current DC nonce.
+          - name: security_balance
+            description: The current HST balance.
+          - name: security_nonce
+            description: The current HST nonce.
+          - name: first_block
+            description: The wallet's first active block.
+          - name: last_block
+            description: The wallet's latest active block.
+          - name: staked_balance
+            description: The wallet's staked balance.
+
+      - name: accounts
+        description: Historical account statuses.
+        columns:
+          - name: address
+            description: The wallet address (PK).
+          - name: balance
+            description: The historical balance in bones (1e8 bones/HNT).
+          - name: nonce
+            description: The historical nonce.
+          - name: dc_balance
+            description: The historical DC balance.
+          - name: dc_nonce
+            description: The historical DC nonce.
+          - name: security_balance
+            description: The historical HST balance.
+          - name: security_nonce
+            description: The historical HST nonce.
+          - name: block
+            description: Historical status is as of this block.
+          - name: staked_balance
+            description: The wallet's staked balance.
+
+      - name: block_signatures
+        description: Block signatures.
+        columns:
+          - name: block
+          - name: signer
+          - name: signature
+
+      - name: blocks
+        description: Block metadata.
+        columns:
+          - name: height
+          - name: time
+          - name: timestamp
+          - name: prev_hash
+          - name: block_hash
+          - name: transaction_count
+          - name: hbbft_round
+          - name: election_epoch
+          - name: epoch_start
+          - name: rescue_signature
+          - name: snapshot_hash
+          - name: created_at
+
+      - name: challenge_receipts_parsed
+        description: POC receipts parsed from transaction JSON.
+        columns:
+          - name: block
+          - name: hash
+          - name: time
+          - name: transmitter_name
+          - name: transmitter_address
+          - name: origin
+          - name: witness_owner
+          - name: witness_name
+          - name: witness_address
+          - name: witness_is_valid
+          - name: witness_invalid_reason
+          - name: witness_signal
+          - name: witness_snr
+          - name: witness_channel
+          - name: witness_datarate
+          - name: witness_frequency
+          - name: witness_location
+          - name: witness_timestamp
+
+      - name: dc_burns
+        description: DC burn events.
+        columns:
+          - name: block
+          - name: transaction_hash
+          - name: actor
+          - name: type
+          - name: amount
+          - name: oracle_price
+          - name: time
+
+      - name: denylist
+        description: The current active denylist.
+        columns:
+          - name: id
+            description: Primary key id.
+          - name: hash
+            description: The address of a denied hotspot.
+            tests: 
+              - unique
+              - not_null
+
+      - name: gateway_inventory
+        description: The current state of all hotspots.
+        columns:
+          - name: address
+          - name: owner
+          - name: location
+          - name: last_poc_challenge
+          - name: last_poc_onion_key_hash
+          - name: witnesses
+          - name: first_block
+          - name: last_block
+          - name: nonce
+          - name: name
+          - name: first_timestamp
+          - name: reward_scale
+          - name: elevation
+          - name: gain
+          - name: location_hex
+          - name: mode
+          - name: payer
+
+      - name: gateway_status
+        description: The current networking status of all hotspots.
+        columns: 
+          - name: address
+          - name: online
+          - name: block
+          - name: updated_at
+          - name: poc_interval
+          - name: last_challenge
+          - name: peer_timestamp
+          - name: listen_addrs
+
+      - name: gateways
+        description: The historical location/challenge statuses of hotspots.
+        columns:
+          - name: block
+          - name: address
+          - name: owner
+          - name: location
+          - name: last_poc_challenge
+          - name: last_poc_onion_key_hash
+          - name: witnesses
+          - name: nonce
+          - name: name
+          - name: time
+          - name: reward_scale
+          - name: elevation
+          - name: gain
+          - name: location_hex
+          - name: mode
+
+      - name: locations
+        description: Human-readable relationships between h3 hexes and geographic locations.
+        columns: 
+          - name: location
+          - name: long_street
+          - name: short_street
+          - name: long_city
+          - name: short_city
+          - name: long_state
+          - name: short_state
+          - name: long_country
+          - name: short_country
+          - name: search_city
+          - name: city_id
+          - name: geometry
+
+      - name: makers
+        description: List of approved manufacturers and their wallet addresses.
+        columns:
+          - name: id
+          - name: name
+          - name: address
+
+      - name: oracle_inventory
+        description: List of current price oracles.
+        columns:
+          - name: address
+
+      - name: oracle_price_predictions
+        description: Timestamped oracle price predictions.
+        columns: 
+          - name: time
+          - name: price
+
+      - name: oracle_prices
+        description: Oracle prices (USD/HNT) by block.
+        columns:
+          - name: block
+          - name: price
+
+      - name: oui_inventory
+        description: Current LoRaWAN Network Servers and their Organizationally Unique Identifiers (OUI).
+        columns:
+          - name: oui
+          - name: owner
+          - name: nonce
+          - name: addresses
+          - name: subnets
+          - name: first_block
+          - name: last_block
+
+      - name: ouis
+        description: Historical LoRaWAN Network Servers and their Organizationally Unique Identifiers (OUI).
+        columns:
+          - name: block
+          - name: oui
+          - name: owner
+          - name: nonce
+          - name: addresses
+          - name: subnets
+
+      - name: packets
+        description: Summary of packets transferred by gateway by block.
+        columns:
+          - name: block
+          - name: transaction_hash
+          - name: time
+          - name: gateway
+          - name: num_packets
+          - name: num_dcs
+
+      - name: pending_transaction_actors
+        description: Participants in current pending transactions.
+        columns:
+          - name: actor
+          - name: actor_role
+          - name: transaction_hash
+          - name: created_at
+
+      - name: pending_transactions
+        description: Current pending transactions.
+        columns:
+          - name: created_at
+          - name: updated_at
+          - name: hash
+          - name: type
+          - name: address
+          - name: nonce
+          - name: nonce_type
+          - name: status
+          - name: failed_reason
+          - name: data
+          - name: fields
+
+      - name: rewards
+        description: Historical rewards transactions.
+        columns: 
+          - name: block
+          - name: transaction_hash
+          - name: time
+          - name: account
+          - name: gateway
+          - name: amount
+          - name: type
+
+
+      - name: rewards_by_day
+        description: Rewards data grouped by day by gateway.
+        columns:
+          - name: address
+          - name: date
+          - name: amount
+
+      - name: spatial_ref_sys
+        description: Spatial reference system (private).
+        columns:
+          - name: srid
+          - name: auth_name
+          - name: auth_srid
+          - name: srtext
+          - name: proj4text
+
+      - name: stats_inventory
+        description: Current status of various network statistics.
+        columns: 
+          - name: name
+          - name: value
+
+      - name: transaction_actors
+        description: Various ways actors interact with a transaction.
+        columns:
+          - name: actor
+          - name: actor_role
+          - name: transaction_hash
+          - name: block
+
+      - name: transactions
+        description: All blockchain transactions. 
+        columns:
+          - name: block
+          - name: hash
+          - name: type
+          - name: fields
+          - name: time
+
+      - name: validator_inventory
+        description: Current state of all network validators.
+        columns:
+          - name: address
+          - name: name
+          - name: owner
+          - name: status
+          - name: stake
+          - name: nonce
+          - name: last_heartbeat
+          - name: version_heartbeat
+          - name: penalty
+          - name: penalties
+          - name: first_block
+          - name: last_block
+
+      - name: validator_isp
+        description: Validator ISP's and locations.
+        columns: 
+          - name: address
+          - name: isp
+          - name: geo_data
+          - name: host
+          - name: ip
+          - name: rdns
+          - name: asn
+          - name: country_name
+          - name: country_code
+          - name: region_name
+          - name: region_code
+          - name: city
+          - name: postal_code
+          - name: continent_name
+          - name: latitude
+          - name: longitude
+          - name: metro_code
+          - name: timezone
+          - name: datetime
+
+      - name: validator_status
+        description: Current validator networking status.
+        columns:
+          - name: address
+          - name: online
+          - name: block
+          - name: peer_timestamp
+          - name: listen_addrs
+          - name: updated_at
+
+      - name: validators
+        description: Historical validator activity as of a given block.
+        columns: 
+          - name: block
+          - name: address
+          - name: name
+          - name: owner
+          - name: status
+          - name: stake
+          - name: nonce
+          - name: last_heartbeat
+          - name: version_heartbeat
+          - name: penalty
+          - name: penalties
+
+      - name: vars_inventory
+        description: Current inventory of chain variables.
+        columns:
+          - name: name
+          - name: type
+          - name: value
+
+      - name: witnesses
+        description: Deprecated. Derive witness lists from challenge receipts.
+        columns:
+          - name: gateway
+          - name: witnesses
+          - name: last_update
+
+      
