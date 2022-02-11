@@ -1,7 +1,7 @@
-Welcome to your new dbt project!
+# dbt-dewi-etl
+Schema bootstrapping, validation, and documentation for [DeWi ETL](https://etl.dewi.org). Built with [dbt](https://docs.getdbt.com/).
 
-### Using the starter project
-
+## Usage
 Try running the following commands:
 - dbt run
 - dbt test
