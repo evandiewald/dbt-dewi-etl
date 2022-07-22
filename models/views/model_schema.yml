@@ -8,13 +8,34 @@ models:
       - name: hash
       - name: type
       - name: challenger
-      - name: challenger_location
       - name: challenger_owner
       - name: fee
       - name: onion_key_hash
       - name: path
       - name: secret
       - name: time
+
+  - name: challenge_receipts_parsed
+    description: POC challenge receipts fully parsed with additional metadata, like location.
+    columns:
+      - name: block
+      - name: hash
+      - name: time
+      - name: transmitter_name
+      - name: transmitter_address
+      - name: origin
+      - name: witness_owner
+      - name: witness_name
+      - name: witness_address
+      - name: witness_is_valid
+      - name: witness_invalid_reason
+      - name: witness_signal
+      - name: witness_snr
+      - name: witness_channel
+      - name: witness_datarate
+      - name: witness_frequency
+      - name: witness_location
+      - name: witness_timestamp
 
   - name: challenge_requests
     description: POC challenge requests parsed from transaction JSON.
