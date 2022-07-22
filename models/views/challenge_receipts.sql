@@ -7,7 +7,6 @@ SELECT
 
     -- fields specific to this txn
     fields->>'challenger' as challenger,
-    fields->>'challenger_location' as challenger_location,
     fields->>'challenger_owner' as challenger_owner,
     fields->>'fee' as fee,
     fields->>'onion_key_hash' as onion_key_hash,
@@ -18,5 +17,5 @@ SELECT
 FROM
   {{ source('etl', 'transactions') }}
 WHERE
-  type = CAST('poc_receipts_v1' AS transaction_type)
+  type = CAST('poc_receipts_v2' AS transaction_type)
 

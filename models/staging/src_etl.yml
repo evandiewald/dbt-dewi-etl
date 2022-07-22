@@ -2,7 +2,7 @@ version: 2
 
 sources:
   - name: etl
-    database: etl2
+    database: etl
     schema: public
     tables:
       - name: account_inventory
@@ -73,28 +73,6 @@ sources:
           - name: rescue_signature
           - name: snapshot_hash
           - name: created_at
-
-      - name: challenge_receipts_parsed
-        description: POC receipts parsed from transaction JSON.
-        columns:
-          - name: block
-          - name: hash
-          - name: time
-          - name: transmitter_name
-          - name: transmitter_address
-          - name: origin
-          - name: witness_owner
-          - name: witness_name
-          - name: witness_address
-          - name: witness_is_valid
-          - name: witness_invalid_reason
-          - name: witness_signal
-          - name: witness_snr
-          - name: witness_channel
-          - name: witness_datarate
-          - name: witness_frequency
-          - name: witness_location
-          - name: witness_timestamp
 
       - name: dc_burns
         description: DC burn events.
@@ -274,14 +252,6 @@ sources:
           - name: gateway
           - name: amount
           - name: type
-
-
-      - name: rewards_by_day
-        description: Rewards data grouped by day by gateway.
-        columns:
-          - name: address
-          - name: date
-          - name: amount
 
       - name: spatial_ref_sys
         description: Spatial reference system (private).
