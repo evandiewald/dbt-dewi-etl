@@ -42,7 +42,7 @@ data_w1 as (
             b.value::json->>'signal' as witness_signal,
             b.value::json->>'snr' as witness_snr,
             b.value::json->>'channel' as witness_channel,
-            b.value::json->>'datarate' as witness_sf,
+            b.value::json->>'datarate' as witness_datarate,
             b.value::json->>'frequency' as witness_frequency,
             b.value::json->>'location' as witness_location,
             b.value::json->>'timestamp' as witness_timestamp
@@ -55,7 +55,7 @@ hotspot1 as (
 
 select  a.block, a.hash, a.time, h.name as transmitter_name, a.challengee_gateway as transmitter_address, a.origin,
         b.witness_owner, wt.name as witness_name, b.witness_address, COALESCE(b.witness_is_valid, 'No Witness') as witness_is_valid,
-        b.witness_invalid_reason, b.witness_signal, b.witness_snr, b.witness_channel, b.witness_sf, b.witness_frequency,
+        b.witness_invalid_reason, b.witness_signal, b.witness_snr, b.witness_channel, b.witness_datarate, b.witness_frequency,
         b.witness_location, b.witness_timestamp
 from    data_r1 a
 join    hotspot1 h
