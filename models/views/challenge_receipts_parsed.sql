@@ -1,7 +1,6 @@
 {{
     config(
         materialized='incremental', unlogged=True,
-        unique_key=['hash', 'witness_address'],
         schema='public'
     )
 }}
