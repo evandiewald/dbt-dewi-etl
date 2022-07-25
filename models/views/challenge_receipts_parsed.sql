@@ -1,7 +1,6 @@
 {{
     config(
-        materialized='incremental', unlogged=True,
-        schema='public'
+        materialized='incremental', unlogged=True
     )
 }}
 
