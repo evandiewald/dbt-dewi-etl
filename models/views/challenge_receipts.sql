@@ -18,4 +18,3 @@ FROM
   {{ source('etl', 'transactions') }}
 WHERE
   type = CAST('poc_receipts_v2' AS transaction_type)
-

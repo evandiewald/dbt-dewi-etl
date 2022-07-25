@@ -1,16 +1,6 @@
 {{
     config(
-        materialized='incremental', unlogged=True,
-        indexes=[
-            {'columns': ['block'], 'type': 'btree'},
-            {'columns': ['hash'], 'type': 'btree'},
-            {'columns': ['time'], 'type': 'btree'},
-            {'columns': ['transmitter_address'], 'type': 'btree'},
-            {'columns': ['transmitter_name'], 'type': 'btree'},
-            {'columns': ['witness_address'], 'type': 'btree'},
-            {'columns': ['witness_name'], 'type': 'btree'}
-        ],
-        statement_timeout=0
+        materialized='incremental', unlogged=True
     )
 }}
 
@@ -18,7 +8,7 @@ with data1 as
 (
     SELECT      a.block, a.hash, a.time, b.value as cpath
     FROM        {{ ref('challenge_receipts') }} a, json_array_elements(a.path::json) b
-    WHERE       a.block > (select max(height) - {{ var('N_DAYS_CHALLENGE_RECEIPTS') }}*1440 from {{ source('etl', 'blocks')}})
+    WHERE       a.block > COALESCE((select max(block) from public.challenge_receipts_parsed), (select max(height) - 1440*30 from {{ source('etl', 'blocks') }}))
 ),
 data2 as (
     select  a.block, a.hash, a.time,
