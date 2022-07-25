@@ -1,6 +1,8 @@
 {{
     config(
-        materialized='incremental', unlogged=True
+        materialized='incremental', unlogged=True,
+        unique_key=['hash', 'witness_address'],
+        schema='public'
     )
 }}
 
@@ -8,7 +10,17 @@ with data1 as
 (
     SELECT      a.block, a.hash, a.time, b.value as cpath
     FROM        {{ ref('challenge_receipts') }} a, json_array_elements(a.path::json) b
-    WHERE       a.block > COALESCE((select max(block) from public.challenge_receipts_parsed), (select max(height) - 1440*30 from {{ source('etl', 'blocks') }}))
+    {% if is_incremental() %}
+
+    -- this filter will only be applied on an incremental run
+    WHERE a.block > COALESCE((select max(block) from public.challenge_receipts_parsed), (select max(height) - 1440*30 from {{ source('etl', 'blocks') }}))
+
+    {% else %}
+
+    WHERE a.block > COALESCE((select max(block) from public.challenge_receipts_parsed), (select max(height) - 1440*30 from {{ source('etl', 'blocks') }}))
+
+    {% endif %}
+    
 ),
 data2 as (
     select  a.block, a.hash, a.time,
